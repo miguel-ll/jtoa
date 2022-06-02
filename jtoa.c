@@ -276,7 +276,7 @@ int decompress(FILE *fp) {
 
 	init_image(&image, &jpg);
 
-	while ( jpg.output_scanline < jpg.output_height ) {
+	while (jpg.output_scanline < jpg.output_height) {
 		jpeg_read_scanlines(&jpg, buffer, 1);
 		process_scanline(&jpg, buffer[0], &image);
 	}
@@ -296,14 +296,12 @@ int main(int argc, char** argv) {
 	strcpy(ascii_palette, default_palette);
 	int r = parse_options(argc, argv);
 	if ( r >= 0 ) return r;
-
 	int n;
+	
 	for ( n=1; n<argc; ++n ) {
-
 		// Skip options
 		if ( argv[n][0]=='-' && argv[n][1]!=0 )
 			continue;
-
 		// Read from stdin
 		if ( argv[n][0]=='-' && argv[n][1]==0 ) {
 			int r = decompress(stdin);
@@ -311,22 +309,18 @@ int main(int argc, char** argv) {
 				continue;
 		}
 		FILE *fp;
-		if ( (fp = fopen(argv[n], "rb")) != NULL ) {
-
-			if ( verbose )
+		if ((fp = fopen(argv[n], "rb")) != NULL) {
+			if (verbose)
 				fprintf(stderr, "File: %s\n", argv[n]);
-
 			int r = decompress(fp);
 			fclose(fp);
-
-			if ( r != 0 )
+			if (r != 0)
 				return r;
 		} else {
 			fprintf(stderr, "Can't open %s\n", argv[n]);
 			return 1;
 		}
 	}
-
 	return 0;
 }
 
